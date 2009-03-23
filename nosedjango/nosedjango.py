@@ -14,7 +14,9 @@ import nose.case
 # search the current working directory and all parent directories to find
 # the settings file
 from nose.importer import add_path
-os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+if not 'DJANGO_SETTINGS_MODULE' in os.environ:
+    os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
+
 import re
 NT_ROOT = re.compile(r"^[a-zA-Z]:\\$")
 def get_SETTINGS_PATH():
@@ -22,8 +24,11 @@ def get_SETTINGS_PATH():
     Hunt down the settings.py module by going up the FS path
     '''
     cwd = os.getcwd()
+    settings_filename = '%s.py' % (
+        os.environ['DJANGO_SETTINGS_MODULE'].split('.')[-1]
+        )
     while cwd:
-        if 'settings.py' in os.listdir(cwd):
+        if settings_filename in os.listdir(cwd):
             break
         cwd = os.path.split(cwd)[0]
         if os.name == 'nt' and NT_ROOT.match(cwd):
