@@ -1,0 +1,6 @@
+python-nosedjango (0.6-inoi1) unstable; urgency=low
+
+  * Debianized version of nosedjango, a nose plugin for Django
+
+ -- Jyrki Pulliainen <jyrki.pulliainen@inoi.fi>  Mon, 23 Mar 2009 12:27:45 +0200
+

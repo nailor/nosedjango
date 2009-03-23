@@ -6,3 +6,12 @@
 *.egg-info
 build
 dist
+
+# Debian packaging
+python-build-stamp-*
+debian/compat
+debian/files
+debian/pycompat
+debian/python-nosedjango*debhelper*
+debian/python-nosedjango.substvars
+debian/python-nosedjango/
