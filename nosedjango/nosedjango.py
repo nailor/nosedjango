@@ -84,7 +84,7 @@ class NoseDjango(Plugin):
         # between DEBUG and not DEBUG.  Example of this include the url
         # dispatcher when 404's are hit.  Django's own test runner forces DEBUG
         # to be off.
-        settings.DEBUG = False 
+        settings.DEBUG = False
 
         from django.core import mail
         self.mail = mail
@@ -100,7 +100,7 @@ class NoseDjango(Plugin):
         connection.creation.create_test_db(verbosity=self.verbosity)
 
         # exit the setup phase and let nose do it's thing
-            
+
     def beforeTest(self, test):
 
         if not SETTINGS_PATH:
@@ -109,7 +109,7 @@ class NoseDjango(Plugin):
 
         # This is a distinctive difference between the NoseDjango
         # test runner compared to the plain Django test runner.
-        # Django uses the standard unittest framework and resets the 
+        # Django uses the standard unittest framework and resets the
         # database between each test *suite*.  That usually resolves
         # into a test module.
         #
@@ -127,7 +127,7 @@ class NoseDjango(Plugin):
             hasattr(test.context, 'fixtures'):
                 # We have to use this slightly awkward syntax due to the fact
                 # that we're using *args and **kwargs together.
-                call_command('loaddata', *test.context.fixtures, **{'verbosity': 0}) 
+                call_command('loaddata', *test.context.fixtures, **{'verbosity': 0})
 
         if isinstance(test, nose.case.Test) and \
             isinstance(test.test, nose.case.MethodTestCase) and \
@@ -151,7 +151,7 @@ class NoseDjango(Plugin):
         from django.test.utils import teardown_test_environment
         from django.db import connection
         from django.conf import settings
-        connection.creation.destroy_test_db(self.old_db, verbosity=self.verbosity)   
+        connection.creation.destroy_test_db(self.old_db, verbosity=self.verbosity)
         teardown_test_environment()
 
         if hasattr(self, 'old_urlconf'):
