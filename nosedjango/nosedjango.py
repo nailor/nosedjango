@@ -17,6 +17,34 @@ from nose.importer import add_path
 if not 'DJANGO_SETTINGS_MODULE' in os.environ:
     os.environ['DJANGO_SETTINGS_MODULE'] = 'settings'
 
+from django.db import connection, transaction
+
+def _dummy(x=None):
+    return
+
+orig_commit = transaction.commit
+orig_rollback = transaction.rollback
+orig_savepoint_commit = transaction.savepoint_commit
+orig_savepoint_rollback = transaction.savepoint_rollback
+orig_enter = transaction.enter_transaction_management
+orig_leave = transaction.leave_transaction_management
+
+def disable_transaction_support():
+    transaction.commit = _dummy
+    transaction.rollback = _dummy
+    transaction.savepoint_commit = _dummy
+    transaction.savepoint_rollback = _dummy
+    transaction.enter_transaction_management = _dummy
+    transaction.leave_transaction_management = _dummy
+
+def restore_transaction_support():
+    transaction.commit = orig_commit
+    transaction.rollback = orig_rollback
+    transaction.savepoint_commit = orig_savepoint_commit
+    transaction.savepoint_rollback = orig_savepoint_rollback
+    transaction.enter_transaction_management = orig_enter
+    transaction.leave_transaction_management = orig_leave
+
 import re
 NT_ROOT = re.compile(r"^[a-zA-Z]:\\$")
 def get_SETTINGS_PATH():
@@ -88,7 +116,6 @@ class NoseDjango(Plugin):
 
         from django.core import mail
         self.mail = mail
-        from django.conf import settings
         from django.core import management
         from django.test.utils import setup_test_environment
         from django.db import connection
@@ -100,6 +127,23 @@ class NoseDjango(Plugin):
         connection.creation.create_test_db(verbosity=self.verbosity)
 
         # exit the setup phase and let nose do it's thing
+
+    def afterTest(self, test):
+        # Restore transaction support on tests
+        from django.conf import settings
+        transaction_support = True
+        if hasattr(settings, 'DISABLE_TRANSACTION_MANAGEMENT'):
+            # Do not use transactions if user has forbidden usage.
+            # Assume that the database supports them anyway.
+            transaction_support = not settings.DISABLE_TRANSACTION_MANAGEMENT
+
+        if transaction_support:
+            restore_transaction_support()
+            transaction.rollback()
+            transaction.leave_transaction_management()
+            # If connection is not closed Postgres can go wild with
+            # character encodings.
+            connection.close()
 
     def beforeTest(self, test):
 
@@ -120,7 +164,19 @@ class NoseDjango(Plugin):
         from django.core.management import call_command
         from django.core.urlresolvers import clear_url_caches
         from django.conf import settings
+
         call_command('flush', verbosity=0, interactive=False)
+
+        transaction_support = True
+        if hasattr(settings, 'DISABLE_TRANSACTION_MANAGEMENT'):
+            # Do not use transactions if user has forbidden usage.
+            # Assume that the database supports them anyway.
+            transaction_support = not settings.DISABLE_TRANSACTION_MANAGEMENT
+        self.mail.outbox = []
+        if transaction_support:
+            transaction.enter_transaction_management()
+            transaction.managed(True)
+            disable_transaction_support()
 
         if isinstance(test, nose.case.Test) and \
             isinstance(test.test, nose.case.MethodTestCase) and \
@@ -138,7 +194,6 @@ class NoseDjango(Plugin):
                 settings.ROOT_URLCONF = self.urls
                 clear_url_caches()
 
-        self.mail.outbox = []
 
     def finalize(self, result=None):
         """
