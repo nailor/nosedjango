@@ -167,8 +167,6 @@ class NoseDjango(Plugin):
         from django.conf import settings
         from django.db import connection, transaction
 
-        call_command('flush', verbosity=0, interactive=False)
-
         transaction_support = True
         if hasattr(settings, 'DISABLE_TRANSACTION_MANAGEMENT'):
             # Do not use transactions if user has forbidden usage.
@@ -179,6 +177,9 @@ class NoseDjango(Plugin):
             transaction.enter_transaction_management()
             transaction.managed(True)
             self.disable_transaction_support(transaction)
+
+        else:
+            call_command('flush', verbosity=0, interactive=False)
 
         if isinstance(test, nose.case.Test) and \
             isinstance(test.test, nose.case.MethodTestCase) and \
