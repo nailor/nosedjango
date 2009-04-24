@@ -1,7 +1,7 @@
 Source: python-nosedjango
 Priority: extra
 Maintainer: Jyrki Pulliainen <jyrki.pulliainen@inoi.fi>
-Build-Depends: python2.5, debhelper (>> 3.0.0), python, python2.5-dev
+Build-Depends: python (>=2.5), debhelper (>> 3.0.0), python-dev
 Standards-Version: 3.5.8
 Section: python
 
@@ -10,4 +10,8 @@ Section: python
 Architecture: all
 Depends: python-django, python-imaging, python-nose (>= 0.10.3)
 Description: A nose plugin for Django unit tests
-  This plugin enables running Django tests with nosetests
+ This is a Nose unit test framework for Django unit tests.
+ .
+ Nosedjango handles creating and removing test databases before every
+ single test keeping the tests isolated. It also has experimental
+ transaction support to speed up unit tests.
