@@ -15,7 +15,8 @@ with 1.1.
 Usage
 -----
 
-::
+Unit tests can be run with following command::
+
   nose-django --with-django [nose-options]
 
 Building Debian package
