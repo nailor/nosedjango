@@ -19,6 +19,9 @@ Unit tests can be run with following command::
 
   nose-django --with-django [nose-options]
 
+Custom settings be used by setting ``DJANGO_SETTINGS_MODULE``
+environmental variable.
+
 Building Debian package
 -----------------------
 
