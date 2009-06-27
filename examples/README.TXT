@@ -13,7 +13,7 @@ do so.
 As usual, you need to tell nose to run doctest test strings in modules
 that contain standard test classes.
 
-A successful run should hit *11* test cases excercising :
+A successful run should hit *14* test cases excercising :
 
     * race conditions between test cases that create objects in test
       methods
