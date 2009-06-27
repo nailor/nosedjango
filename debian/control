@@ -8,7 +8,7 @@ Section: python
 Package: python-nosedjango
 Section: python
 Architecture: all
-Depends: python-django, python-imaging, python-nose (>= 0.10.3)
+Depends: python-django, python-nose (>= 0.10.0)
 Description: A nose plugin for Django unit tests
  This is a Nose unit test framework for Django unit tests.
  .
