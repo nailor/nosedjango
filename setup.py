@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='NoseDjango',
-    version='0.6',
+    version='0.7',
     author='Jyrki Pulliainen',
     author_email = 'jyrki.pulliainen@inoi.fi',
     description = 'nose plugin for easy testing of django projects ' \

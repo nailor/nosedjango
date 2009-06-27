@@ -1,2 +1,2 @@
 # Just a place holder for Windows.
-__version__ = (0, 6)
+__version__ = (0, 7)
