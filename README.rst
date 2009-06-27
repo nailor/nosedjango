@@ -29,6 +29,7 @@ Plugin can also be installed as a Debian package::
 
   dpkg-checkbuilddeps
   dpkg-buildpackage -us -uc -rfakeroot
+  sudo debi
 
 Authors
 -------
