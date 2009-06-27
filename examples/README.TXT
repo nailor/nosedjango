@@ -26,7 +26,7 @@ A successful run should hit *14* test cases excercising :
 
 --- Sample test run below ---
 
-C:\dev\nosedjango\examples\project>nosetests -v --with-django --with-doctest --doctest-tests --doctest-tests
+$ nosetests -v --with-django --with-doctest --doctest-tests --doctest-tests
 
 Doctest: project.zoo.models.Zoo ... ok
 Doctest: project.zoo.models.Zoo.__str__ ... ok
