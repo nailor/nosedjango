@@ -3,8 +3,8 @@ from setuptools import setup, find_packages
 setup(
     name='NoseDjango',
     version='0.6',
-    author='Victor Ng',
-    author_email = 'crankycoder@gmail.com',
+    author='Jyrki Pulliainen',
+    author_email = 'jyrki.pulliainen@inoi.fi',
     description = 'nose plugin for easy testing of django projects ' \
         'and apps. Sets up a test database (or schema) and installs apps ' \
         'from test settings file before tests are run, and tears the test ' \
