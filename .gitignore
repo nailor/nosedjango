@@ -7,6 +7,12 @@
 build
 dist
 
+# Temporary files
+*~
+\#*
+.#*
+*#
+
 # Debian packaging
 python-build-stamp-*
 debian/compat
