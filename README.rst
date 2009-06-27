@@ -39,3 +39,10 @@ This version is maintained by Jyrki Pulliainen
 
 Original plugin courtesy of Victor Ng <crankycoder@gmail.com> who
 rewrote Jason Pellerin's original nose-django plugin.
+
+License
+-------
+
+This software is licensed with GNU LESSER GENERAL PUBLIC LICENSE
+version 3 or (at your option) any later version. See `COPYING` for
+more details.
