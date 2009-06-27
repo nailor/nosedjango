@@ -14,4 +14,4 @@ debian/files
 debian/pycompat
 debian/python-nosedjango*debhelper*
 debian/python-nosedjango.substvars
-debian/python-nosedjango/
+debian/python-nosedjango
