@@ -1,3 +1,9 @@
+python-nosedjango (0.7.1) unstable; urgency=low
+
+  * Allow more fine grained control over transactions
+
+ -- Jyrki Pulliainen <jyrki.pulliainen@inoi.fi>  Wed, 29 Jul 2009 18:33:46 +0300
+
 python-nosedjango (0.7) unstable; urgency=low
 
   * Support tests within transactions
