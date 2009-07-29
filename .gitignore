@@ -21,3 +21,6 @@ debian/pycompat
 debian/python-nosedjango*debhelper*
 debian/python-nosedjango.substvars
 debian/python-nosedjango
+
+# Generated docs
+README.html
