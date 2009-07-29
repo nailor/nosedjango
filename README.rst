@@ -59,6 +59,43 @@ A successful run should hit *14* test cases excercising :
     * mixes of doctests and test modules
     * docstrings in models
 
+Transaction support
+~~~~~~~~~~~~~~~~~~~
+
+As default, nosedjango plugin runs the tests within a transaction.
+This behaviour can be altered in two ways:
+
+* Having ``DISABLE_TRANSACTION_MANAGEMENT`` in settings.py makes
+  nosedjango not to use transactions
+
+* Having ``use_transaction = False`` in test's context prevents using
+  transaction for the test. Note: this can not override
+  ``DISABLE_TRANSACTION_MANAGEMENT``. Example::
+
+    use_transaction = False
+
+    def test_simple():
+       assert True
+
+  Note, that this implies to *all* tests in the same context (ie.
+  module or class)
+
+Using fixtures
+~~~~~~~~~~~~~~
+
+Nosedjango supports loading fixtures from test's context. Fixtures are
+generated the same way as they are in the traditional Django test
+system: using ``manage.py dumpdata``. Example::
+
+  fixtures = ['cheese.json', 'cakes']
+
+  def test_cheesecake():
+     # do something...
+
+Note, that this implies to *all* tests in the same context (ie.
+module or class)
+
+
 Sample test run
 ~~~~~~~~~~~~~~~
 ::
