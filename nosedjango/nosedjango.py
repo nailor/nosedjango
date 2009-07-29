@@ -41,7 +41,7 @@ def get_SETTINGS_PATH():
 
 SETTINGS_PATH = get_SETTINGS_PATH()
 
-def _dummy(x=None):
+def _dummy(*args, **kwargs):
     """Dummy function that replaces the transaction functions"""
     return
 
@@ -133,6 +133,8 @@ class NoseDjango(Plugin):
         from django.conf import settings
         from django.db import connection, transaction
         transaction_support = True
+        if hasattr(test.context, 'use_transaction'):
+            transaction_support = test.context.use_transaction
         if hasattr(settings, 'DISABLE_TRANSACTION_MANAGEMENT'):
             # Do not use transactions if user has forbidden usage.
             # Assume that the database supports them anyway.
@@ -168,6 +170,8 @@ class NoseDjango(Plugin):
         from django.db import connection, transaction
 
         transaction_support = True
+        if hasattr(test.context, 'use_transaction'):
+            transaction_support = test.context.use_transaction
         if hasattr(settings, 'DISABLE_TRANSACTION_MANAGEMENT'):
             # Do not use transactions if user has forbidden usage.
             # Assume that the database supports them anyway.
