@@ -127,16 +127,15 @@ class NoseDjango(Plugin):
         # to be off.
         settings.DEBUG = False
 
-        from django.core import mail
-        self.mail = mail
         from django.core import management
         from django.test.utils import setup_test_environment
-        from django.db import connection
 
         self.old_db = settings.DATABASE_NAME
+        from django.db import connection
 
         # setup the test env for each test case
         setup_test_environment()
+
         connection.creation.create_test_db(verbosity=self.verbosity)
 
         # exit the setup phase and let nose do it's thing
@@ -179,7 +178,6 @@ class NoseDjango(Plugin):
             # Do not use transactions if user has forbidden usage.
             # Assume that the database supports them anyway.
             transaction_support = not settings.DISABLE_TRANSACTION_MANAGEMENT
-        self.mail.outbox = []
         if transaction_support:
             transaction.enter_transaction_management()
             transaction.managed(True)
