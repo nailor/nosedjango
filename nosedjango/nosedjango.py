@@ -97,9 +97,8 @@ class NoseDjango(Plugin):
         # project/..
 
         if not SETTINGS_PATH:
-            sys.stderr.write("Can't find Django settings file!\n")
             # short circuit if no settings file can be found
-            return
+            raise RuntimeError("Can't find Django settings file!")
 
         if self.conf.addPaths:
             map(add_path, self.conf.where)
