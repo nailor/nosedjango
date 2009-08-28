@@ -21,13 +21,13 @@ from django.core.management import setup_environ
 
 import re
 NT_ROOT = re.compile(r"^[a-zA-Z]:\\$")
-def get_SETTINGS_PATH():
+def get_settings_path(settings_module):
     '''
     Hunt down the settings.py module by going up the FS path
     '''
     cwd = os.getcwd()
     settings_filename = '%s.py' % (
-        os.environ['DJANGO_SETTINGS_MODULE'].split('.')[-1]
+        settings_module.split('.')[-1]
         )
     while cwd:
         if settings_filename in os.listdir(cwd):
@@ -38,8 +38,6 @@ def get_SETTINGS_PATH():
         elif cwd == '/':
             return None
     return cwd
-
-SETTINGS_PATH = get_SETTINGS_PATH()
 
 def _dummy(*args, **kwargs):
     """Dummy function that replaces the transaction functions"""
@@ -82,9 +80,22 @@ class NoseDjango(Plugin):
         transaction.enter_transaction_management = self.orig_enter
         transaction.leave_transaction_management = self.orig_leave
 
+    def options(self, parser, env):
+        parser.add_option('--django-settings',
+                          help='Use custom Django settings module.',
+                          metavar='SETTINGS',
+                          )
+        super(NoseDjango, self).options(parser, env)
+
     def configure(self, options, conf):
-        Plugin.configure(self, options, conf)
         self.verbosity = conf.verbosity
+        if options.django_settings:
+            self.settings_module = options.django_settings
+        elif 'DJANGO_SETTINS_MODULE' in os.environ:
+            self.settings_module = os.environ['DJANGO_SETTINGS_MODULE']
+        else:
+            self.settings_module = 'settings'
+        super(NoseDjango, self).configure(options, conf)
 
     def begin(self):
         """Create the test database and schema, if needed, and switch the
@@ -96,15 +107,18 @@ class NoseDjango(Plugin):
         # able to find project.settings if the working dir is project/ or
         # project/..
 
-        if not SETTINGS_PATH:
+        self.settings_path = get_settings_path(self.settings_module)
+        os.environ['DJANGO_SETTINGS_MODULE'] = self.settings_module
+
+        if not self.settings_path:
             # short circuit if no settings file can be found
             raise RuntimeError("Can't find Django settings file!")
 
         if self.conf.addPaths:
             map(add_path, self.conf.where)
 
-        add_path(SETTINGS_PATH)
-        sys.path.append(SETTINGS_PATH)
+        add_path(self.settings_path)
+        sys.path.append(self.settings_path)
         from django.conf import settings
 
         # Some Django code paths evaluate differently
@@ -149,7 +163,7 @@ class NoseDjango(Plugin):
 
     def beforeTest(self, test):
 
-        if not SETTINGS_PATH:
+        if not self.settings_path:
             # short circuit if no settings file can be found
             return
 
@@ -205,7 +219,7 @@ class NoseDjango(Plugin):
         """
         Clean up any created database and schema.
         """
-        if not SETTINGS_PATH:
+        if not self.settings_path:
             # short circuit if no settings file can be found
             return
 
