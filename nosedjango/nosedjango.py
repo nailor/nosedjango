@@ -167,16 +167,6 @@ class NoseDjango(Plugin):
             # short circuit if no settings file can be found
             return
 
-        # This is a distinctive difference between the NoseDjango
-        # test runner compared to the plain Django test runner.
-        # Django uses the standard unittest framework and resets the
-        # database between each test *suite*.  That usually resolves
-        # into a test module.
-        #
-        # The NoseDjango test runner will reset the database between *every*
-        # test case.  This is more in the spirit of unittesting where there is
-        # no state information passed between individual tests.
-
         from django.core.management import call_command
         from django.core.urlresolvers import clear_url_caches
         from django.conf import settings
