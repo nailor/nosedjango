@@ -133,12 +133,10 @@ class NoseDjango(Plugin):
         self.old_db = settings.DATABASE_NAME
         from django.db import connection
 
-        # setup the test env for each test case
         setup_test_environment()
 
         connection.creation.create_test_db(verbosity=self.verbosity)
 
-        # exit the setup phase and let nose do it's thing
 
     def afterTest(self, test):
         # Restore transaction support on tests
