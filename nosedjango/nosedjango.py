@@ -91,7 +91,7 @@ class NoseDjango(Plugin):
         self.verbosity = conf.verbosity
         if options.django_settings:
             self.settings_module = options.django_settings
-        elif 'DJANGO_SETTINS_MODULE' in os.environ:
+        elif 'DJANGO_SETTINGS_MODULE' in os.environ:
             self.settings_module = os.environ['DJANGO_SETTINGS_MODULE']
         else:
             self.settings_module = 'settings'
