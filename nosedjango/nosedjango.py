@@ -46,9 +46,7 @@ def _dummy(*args, **kwargs):
 class NoseDjango(Plugin):
     """
     Enable to set up django test environment before running all tests, and
-    tear it down after all tests. If the django database engine in use is not
-    sqlite3, one or both of --django-test-db or django-test-schema must be
-    specified.
+    tear it down after all tests.
 
     Note that your django project must be on PYTHONPATH for the settings file
     to be loaded. The plugin will help out by placing the nose working dir
