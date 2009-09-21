@@ -72,13 +72,15 @@ This behaviour can be altered in two ways:
   transaction for the test. Note: this can not override
   ``DISABLE_TRANSACTION_MANAGEMENT``. Example::
 
-    use_transaction = False
+    class SomeTests(object):
 
-    def test_simple():
-       assert True
+        use_transaction = False
+
+        def test_simple(self):
+            pass
 
   Note, that this implies to *all* tests in the same context (ie.
-  module or class)
+  class).
 
 Using fixtures
 ~~~~~~~~~~~~~~
