@@ -100,23 +100,32 @@ class NoseDjango(Plugin):
         connection over to that database. Then call install() to install
         all apps listed in the loaded settings module.
         """
-        # Add the working directory (and any package parents) to sys.path
-        # before trying to import django modules; otherwise, they won't be
-        # able to find project.settings if the working dir is project/ or
-        # project/..
-
-        self.settings_path = get_settings_path(self.settings_module)
         os.environ['DJANGO_SETTINGS_MODULE'] = self.settings_module
-
-        if not self.settings_path:
-            # short circuit if no settings file can be found
-            raise RuntimeError("Can't find Django settings file!")
 
         if self.conf.addPaths:
             map(add_path, self.conf.where)
 
-        add_path(self.settings_path)
-        sys.path.append(self.settings_path)
+        try:
+            __import__(self.settings_module)
+            self.settings_path = self.settings_module
+        except ImportError:
+            # Settings module is not found in PYTHONPATH. Try to do
+            # some funky backwards crawling in directory tree, ie. add
+            # the working directory (and any package parents) to
+            # sys.path before trying to import django modules;
+            # otherwise, they won't be able to find project.settings
+            # if the working dir is project/ or project/..
+
+
+            self.settings_path = get_settings_path(self.settings_module)
+
+            if not self.settings_path:
+                # short circuit if no settings file can be found
+                raise RuntimeError("Can't find Django settings file!")
+
+            add_path(self.settings_path)
+            sys.path.append(self.settings_path)
+
         from django.conf import settings
 
         # Some Django code paths evaluate differently
