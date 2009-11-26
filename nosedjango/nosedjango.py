@@ -149,6 +149,8 @@ class NoseDjango(Plugin):
         # Restore transaction support on tests
         from django.conf import settings
         from django.db import connection, transaction
+        from django.core.management import call_command
+
         transaction_support = True
         if hasattr(test.context, 'use_transaction'):
             transaction_support = test.context.use_transaction
@@ -164,6 +166,8 @@ class NoseDjango(Plugin):
             # If connection is not closed Postgres can go wild with
             # character encodings.
             connection.close()
+        else:
+            call_command('flush', verbosity=0, interactive=False)
 
     def beforeTest(self, test):
 
@@ -190,9 +194,6 @@ class NoseDjango(Plugin):
             transaction.enter_transaction_management()
             transaction.managed(True)
             self.disable_transaction_support(transaction)
-
-        else:
-            call_command('flush', verbosity=0, interactive=False)
 
         if isinstance(test, nose.case.Test) and \
             isinstance(test.test, nose.case.MethodTestCase) and \
