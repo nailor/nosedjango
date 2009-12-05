@@ -31,6 +31,9 @@ following options:
                             The specified `MODULE` needs to be found
                             in ``sys.path``.
 
+--django-sqlite             If set, use in-memory sqlite database for
+                            tests.
+
 Building Debian package
 -----------------------
 

@@ -83,6 +83,10 @@ class NoseDjango(Plugin):
                           help='Use custom Django settings module.',
                           metavar='SETTINGS',
                           )
+        parser.add_option('--django-sqlite',
+                          help='Use in-memory sqlite for the tests',
+                          metavar='use_sqlite',
+                          )
         super(NoseDjango, self).options(parser, env)
 
     def configure(self, options, conf):
@@ -93,6 +97,11 @@ class NoseDjango(Plugin):
             self.settings_module = os.environ['DJANGO_SETTINGS_MODULE']
         else:
             self.settings_module = 'settings'
+
+        self._use_sqlite = False
+        if options.django_sqlite:
+            self._use_sqlite = True
+
         super(NoseDjango, self).configure(options, conf)
 
     def begin(self):
@@ -127,6 +136,14 @@ class NoseDjango(Plugin):
             sys.path.append(self.settings_path)
 
         from django.conf import settings
+
+        # If the user passed in --django-sqlite, use an in-memory sqlite db
+        if self._use_sqlite:
+            settings.DATABASE_ENGINE = 'sqlite3'
+            settings.TEST_DATABASE_NAME = None # in-memory database
+
+        # Do our custom testrunner stuff
+        custom_before()
 
         # Some Django code paths evaluate differently
         # between DEBUG and not DEBUG.  Example of this include the url
