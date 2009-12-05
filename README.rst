@@ -9,8 +9,7 @@ and creating/tearing down test database. It also has support for
 fixtures and it has experimental mechanism that wraps the tests in
 transactions to speed up testing.
 
-This plugin has been tested with Django 1.0-branch. It probably works
-with 1.1.
+This plugin works with Django versions 1.0 or newer.
 
 Usage
 -----
