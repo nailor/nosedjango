@@ -21,6 +21,16 @@ Unit tests can be run with following command::
 Custom settings be used by setting ``DJANGO_SETTINGS_MODULE``
 environmental variable.
 
+Command line options
+~~~~~~~~~~~~~~~~~~~~
+
+In addition to default nose command line options, nosedjango offers
+following options:
+
+--django-settings=MODULE    Specify a custom Django settings `MODULE`.
+                            The specified `MODULE` needs to be found
+                            in ``sys.path``.
+
 Building Debian package
 -----------------------
 
