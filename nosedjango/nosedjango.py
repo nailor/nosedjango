@@ -157,6 +157,12 @@ class NoseDjango(Plugin):
         self.old_db = settings.DATABASE_NAME
         from django.db import connection
 
+        if 'south' in settings.INSTALLED_APPS:
+            # South has its own test command that turns off migrations
+            # during testings.  If we detected south, we need to fix syncdb.
+            management.get_commands()
+            management._commands['syncdb'] = 'django.core'
+
         setup_test_environment()
 
         connection.creation.create_test_db(verbosity=self.verbosity)
