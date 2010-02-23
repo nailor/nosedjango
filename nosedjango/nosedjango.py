@@ -228,6 +228,9 @@ class NoseDjango(Plugin):
         from django.core.management import call_command
         from django.core.urlresolvers import clear_url_caches
         from django.db import connection, transaction
+        from django.core import mail
+
+        mail.outbox = []
 
         transaction_support = self._has_transaction_support(test)
         if transaction_support:
