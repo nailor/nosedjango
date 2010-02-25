@@ -1,3 +1,9 @@
+python-nosedjango (0.7.2) unstable; urgency=low
+
+  * Release of nosedjango version 0.7.2
+
+ -- Jyrki Pulliainen <jyrki.pulliainen@inoi.fi>  Thu, 25 Feb 2010 10:37:47 +0200
+
 python-nosedjango (0.7.1) unstable; urgency=low
 
   * Allow more fine grained control over transactions
