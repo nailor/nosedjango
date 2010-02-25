@@ -87,6 +87,11 @@ class NoseDjango(Plugin):
                           help='Use in-memory sqlite for the tests',
                           metavar='use_sqlite',
                           )
+        parser.add_option('--django-interactive',
+                          help='Run tests in interactive mode',
+                          action='store_true',
+                          default=False,
+                          )
         super(NoseDjango, self).options(parser, env)
 
     def configure(self, options, conf):
@@ -102,6 +107,7 @@ class NoseDjango(Plugin):
         if options.django_sqlite:
             self._use_sqlite = True
 
+        self.interactive = options.django_interactive
         super(NoseDjango, self).configure(options, conf)
 
     def begin(self):
@@ -165,7 +171,23 @@ class NoseDjango(Plugin):
 
         setup_test_environment()
 
-        connection.creation.create_test_db(verbosity=self.verbosity)
+        if self.interactive:
+            # For database creation only, bypass the capture plugin. This
+            # allows the user to interact with the "test database already
+            # exists" message.
+            old_stdout = sys.stdout
+            sys.stdout = sys.__stdout__
+            try:
+                connection.creation.create_test_db(verbosity=self.verbosity)
+            finally:
+                sys.stdout = old_stdout
+        else:
+            # If we're in the non-interactive mode (default) destroy
+            # the existing test database without consulting the user
+            connection.creation.create_test_db(
+                verbosity=self.verbosity,
+                autoclobber=True
+                )
 
     def _has_transaction_support(self, test):
         from django.conf import settings

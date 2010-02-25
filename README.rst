@@ -34,6 +34,11 @@ following options:
 --django-sqlite             If set, use in-memory sqlite database for
                             tests.
 
+--django-interactive        Run tests in interactive mode (see
+                            `DjangoTestSuiteRunner documentation
+                            <http://docs.djangoproject.com/en/dev/topics/testing/#django.test.simple.DjangoTestSuiteRunner>`_).
+                            Default: false.
+
 Building Debian package
 -----------------------
 
@@ -64,7 +69,7 @@ A successful run should hit *14* test cases excercising :
 
     * race conditions between test cases that create objects in test
       methods
-    * race conditions between test cases that create objects in 
+    * race conditions between test cases that create objects in
       fixture loading
     * doctests
     * test functions
