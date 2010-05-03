@@ -148,9 +148,6 @@ class NoseDjango(Plugin):
             settings.DATABASE_ENGINE = 'sqlite3'
             settings.TEST_DATABASE_NAME = None # in-memory database
 
-        # Do our custom testrunner stuff
-        custom_before()
-
         # Some Django code paths evaluate differently
         # between DEBUG and not DEBUG.  Example of this include the url
         # dispatcher when 404's are hit.  Django's own test runner forces DEBUG
