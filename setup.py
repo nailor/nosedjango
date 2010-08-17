@@ -1,8 +1,12 @@
+import os
 from setuptools import setup, find_packages
+
+# This reads the current version from nosedjango's __init__.py
+execfile(os.path.join(os.path.dirname(__file__), 'nosedjango/__init__.py'))
 
 setup(
     name='NoseDjango',
-    version='0.7.2',
+    version='.'.join(str(x) for x in __version__),
     author='Jyrki Pulliainen',
     author_email = 'jyrki.pulliainen@inoi.fi',
     description = 'nose plugin for easy testing of django projects ' \
@@ -21,4 +25,3 @@ setup(
             ]
         }
     )
-
