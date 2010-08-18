@@ -1,3 +1,14 @@
+python-nosedjango (0.8.0-0ppa1) lucid; urgency=low
+
+  * Remove debianization from master
+  * Debianize using git-buildpackage
+  * Ignore debian files
+  * debian: Add git-buildpackage configuration
+  * debhelper: Use compatibility level 7
+  * debian: Satisfy lintian
+
+ -- Jyrki Pulliainen <jyrki@dywypi.org>  Wed, 18 Aug 2010 22:22:27 +0300
+
 python-nosedjango (0.7.3) unstable; urgency=low
 
   * Release of nosedjango version 0.7.3
