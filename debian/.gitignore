@@ -1,0 +1,4 @@
+pycompat
+python-nosedjango*debhelper*
+python-nosedjango.substvars
+python-nosedjango
