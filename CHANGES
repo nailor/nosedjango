@@ -1,3 +1,11 @@
+0.8.0
+-----
+
+Un-debianized version, released 2010-08-18
+
+* Add CHANGES (this!) file
+* Remove debianization
+
 0.7.3
 -----
 
